@@ -5,6 +5,6 @@ export interface PostDto {
   title: string;
   content: string;
   name: string;
-  createDt: Date;
-  updateDt?: Date;
+  createdDt: Date;
+  updatedDt?: Date;
 }

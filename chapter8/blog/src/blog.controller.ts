@@ -12,12 +12,7 @@ import { BlogService } from './blog.service';
 @Controller('blog')
 // Controller의 역할: HTTP 요청을 특정 함수가 실행
 export class BlogController {
-  blogService: BlogService; // 클래스 멤버 변수
-
-  // Nest.js 에서는 DI(의존성 주입)을 사용하지만 배우기 전이므로 생성자 사용 중
-  constructor() {
-    this.blogService = new BlogService();
-  }
+  constructor(private blogService: BlogService) {}
 
   @Get()
   getAllPosts() {
