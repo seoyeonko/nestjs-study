@@ -13,6 +13,7 @@ console.log('🗂️ current working directory: ' + process.cwd()); // print cur
       isGlobal: true,
       envFilePath: `${process.cwd()}/envs/${process.env.NODE_ENV}.env`,
       load: [config],
+      cache: true, // 서버 가동된 뒤에는 설정 파일 변경되지 않으므로 성능상 이득
     }),
     WeatherModule,
   ],
