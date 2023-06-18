@@ -14,6 +14,7 @@ console.log('🗂️ current working directory: ' + process.cwd()); // print cur
       envFilePath: `${process.cwd()}/envs/${process.env.NODE_ENV}.env`,
       load: [config],
       cache: true, // 서버 가동된 뒤에는 설정 파일 변경되지 않으므로 성능상 이득
+      expandVariables: true, // 확장변수 옵션 추가
     }),
     WeatherModule,
   ],

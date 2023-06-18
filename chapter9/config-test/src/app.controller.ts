@@ -29,4 +29,9 @@ export class AppController {
       'redis.port',
     )}`;
   }
+
+  @Get('server-url')
+  getServerUrl(): string {
+    return this.configService.get('SERVER_URL');
+  }
 }
