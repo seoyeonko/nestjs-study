@@ -1,0 +1,23 @@
+[
+  {
+    "id": "2",
+    "title": "두둠칫",
+    "content": "오예",
+    "name": "sean",
+    "createDt": "2023-06-18T03:56:51.988Z"
+  },
+  {
+    "id": "3",
+    "title": "두둠칫",
+    "content": "오예",
+    "name": "sean",
+    "createDt": "2023-06-18T03:56:53.200Z"
+  },
+  {
+    "id": "4",
+    "title": "두둠칫 - 수정",
+    "content": "오예  - 수정",
+    "name": "Sean",
+    "updatedDt": "2023-06-18T03:58:38.155Z"
+  }
+]
