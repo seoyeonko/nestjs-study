@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config'; // 환경 설정에 특화된 모
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WeatherModule } from './weather/weather.module';
+import config from './configs/config';
 
 console.log('🛠️ env: ' + process.env.NODE_ENV); // print env variable
 console.log('🗂️ current working directory: ' + process.cwd()); // print current working directory
@@ -11,6 +12,7 @@ console.log('🗂️ current working directory: ' + process.cwd()); // print cur
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `${process.cwd()}/envs/${process.env.NODE_ENV}.env`,
+      load: [config],
     }),
     WeatherModule,
   ],
