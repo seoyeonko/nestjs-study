@@ -9,7 +9,7 @@ content-type: application/json
 }
 
 ### GetUser
-GET http://localhost:3000/user/getUser/andy@podo.com
+GET http://localhost:3000/user/getUser/andy1@podo.com
 
 ### Update User
 PUT http://localhost:3000/user/update/andy@podo.com
@@ -23,3 +23,13 @@ content-type: application/json
 
 ### Delete User
 DELETE http://localhost:3000/user/delete/andy@podo.com
+
+### Error Case: Invalid Email
+POST http://localhost:3000/user/create
+content-type: application/json
+
+{
+  "username": "andy",
+  "password": "test1234",
+  "email": "andy-podo"
+}

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm'; // 레포지토리 주입 데코레이터
 import { User } from './user.entity';
 import { Repository } from 'typeorm'; // 레포지토리 임퐆트
+import { CreateUserDto, UpdateUserDto } from './user.dto';
 
 @Injectable() // 해당 데코레이터가 있으면 프로바이더가 됨
 export class UserService {
@@ -13,7 +14,7 @@ export class UserService {
     return this.userRepository.delete({ email });
   }
 
-  async updateUser(email: string, _user: User) {
+  async updateUser(email: string, _user: UpdateUserDto) {
     const user: User = await this.getUser(email);
     console.log(_user);
     user.username = _user.username;
@@ -29,7 +30,7 @@ export class UserService {
     return result;
   }
 
-  createUser(user: User): Promise<User> {
+  createUser(user: CreateUserDto): Promise<User> {
     return this.userRepository.save(user);
   }
 }

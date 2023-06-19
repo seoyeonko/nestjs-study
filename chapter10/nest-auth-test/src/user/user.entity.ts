@@ -15,5 +15,5 @@ export class User {
   username: string;
 
   @Column({ default: true })
-  createDt: Date = new Date();
+  createdDt: Date = new Date();
 }
