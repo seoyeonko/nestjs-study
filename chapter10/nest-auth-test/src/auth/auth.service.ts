@@ -34,4 +34,21 @@ export class AuthService {
       throw new HttpException('서버 에러', 500);
     }
   }
+
+  // 쿠키에 데이터를 추가하기 전 유저의 데이터가 맞는지(이메일, 패스워드) 검증하는 로직
+  async validationUser(email: string, password: string) {
+    // 이메일로 유저 정보를 받아옴
+    const user = await this.userService.getUser(email);
+
+    if (!user) {
+      return null;
+    }
+
+    const { password: hashedPassword, ...userInfo } = user;
+    if (bcrypt.compareSync(password, hashedPassword)) {
+      // 패스워드 일치하면 성공
+      return userInfo;
+    }
+    return null;
+  }
 }

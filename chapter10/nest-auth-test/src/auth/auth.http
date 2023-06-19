@@ -3,7 +3,16 @@ POST http://localhost:3000/auth/register
 content-type: application/json
 
 {
-  "email": "andy2@podo.com",
+  "email": "andy3@podo.com",
   "password": "1234",
-  "username": "andy2"
+  "username": "andy3"
+}
+
+### Login
+POST http://localhost:3000/auth/login
+content-type: application/json
+
+{
+  "email": "andy2@podo.com",
+  "password": "1234"
 }
