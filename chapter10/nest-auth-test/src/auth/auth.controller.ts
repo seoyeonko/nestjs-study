@@ -1,6 +1,15 @@
-import { Body, Controller, Post, Request, Response } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  Response,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/user/user.dto';
+import { LoginGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -15,7 +24,7 @@ export class AuthController {
 
   @Post('login')
   async login(@Request() req, @Response() res) {
-    const userInfo = await this.authService.validationUser(
+    const userInfo = await this.authService.validateUser(
       req.body.email,
       req.body.password,
     );
@@ -31,5 +40,25 @@ export class AuthController {
     }
 
     return res.send({ message: 'login success' });
+  }
+
+  // Login Guard 사용
+  @UseGuards(LoginGuard)
+  @Post('login2')
+  async login2(@Request() req, @Response() res) {
+    if (!req.cookies['login'] && req.user) {
+      res.cookie('login', JSON.stringify(req.user), {
+        httpOnly: true,
+        maxAge: 1000 * 10, // 로그인 테스트를 위해 10초로 설정
+      });
+    }
+    return res.send({ message: 'login2 success' });
+  }
+
+  // 로그인한 때만 실행되는 메서드
+  @UseGuards(LoginGuard)
+  @Get('test-guard')
+  testGuard() {
+    return '로그인 된 때만 이 글이 보입니다!!';
   }
 }

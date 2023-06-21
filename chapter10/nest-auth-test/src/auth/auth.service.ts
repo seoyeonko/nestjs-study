@@ -36,7 +36,7 @@ export class AuthService {
   }
 
   // 쿠키에 데이터를 추가하기 전 유저의 데이터가 맞는지(이메일, 패스워드) 검증하는 로직
-  async validationUser(email: string, password: string) {
+  async validateUser(email: string, password: string) {
     // 이메일로 유저 정보를 받아옴
     const user = await this.userService.getUser(email);
 
