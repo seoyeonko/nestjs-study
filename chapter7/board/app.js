@@ -85,7 +85,7 @@ app.post('/modify/', async (req, res) => {
     writer,
     password,
     content,
-    createDt: new Date().toISOString(),
+    createdDt: new Date().toISOString(),
   };
 
   // 업데이트 결과

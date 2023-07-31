@@ -4,7 +4,7 @@ const { ObjectId } = require('mongodb');
 async function writePost(collection, post) {
   // 생성일시, 조회수
   post.hits = 0;
-  post.createDt = new Date().toISOString(); // ISO 포맷으로 날짜 저장
+  post.createdDt = new Date().toISOString(); // ISO 포맷으로 날짜 저장
   return await collection.insertOne(post); // mongodb에 post 저장 후 결과 반환
 }
 
@@ -18,7 +18,7 @@ async function list(collection, page, search) {
       skip: (page - 1) * perPage,
     })
     .sort({
-      createDt: -1, // 역순
+      createdDt: -1, // 역순
     });
 
   const totalCount = await collection.count(query);
