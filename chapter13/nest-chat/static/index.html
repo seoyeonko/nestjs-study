@@ -7,5 +7,29 @@
   </head>
   <body>
     <div id="chat">Nest Chat</div>
+    <input type="text" id="message" placeholder="메세지 입력" />
+    <button onclick="sendMessage()">전송</button>
   </body>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
+
+  <!-- socket.io 클라이언트 -->
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io('http://localhost:3000');
+
+    function sendMessage() {
+      const message = $('#message').val();
+      console.log(message);
+      socket.emit('message', message);
+    }
+
+    socket.on('connect', () => {
+      console.log('connected');
+    });
+
+    socket.on('message', (message) => {
+      $('#chat').append(`<div>${message}</div>`);
+    });
+  </script>
 </html>
