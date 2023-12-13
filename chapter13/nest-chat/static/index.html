@@ -10,11 +10,21 @@
     <!-- socket.io 클라이언트 -->
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
 
-    <script src="http://localhost:3000/script.js"></script>
+    <script defer src="http://localhost:3000/script.js"></script>
   </head>
   <body>
+    <h1>Chat Demo</h1>
+
+    <div>
+      <h2>Room List</h2>
+      <ul id="rooms"></ul>
+    </div>
+
+    <div id="chat"></div>
+
     <div id="chat">Nest Chat</div>
     <input type="text" id="message" placeholder="메세지 입력" />
     <button onclick="sendMessage()">전송</button>
+    <button onclick="createRoom()">방 생성</button>
   </body>
 </html>

@@ -1,5 +1,7 @@
 const socket = io('http://localhost:3000/chat'); // 네임스페이스 추가
+const roomSocket = io('http://localhost:3000/room'); // 채팅방을 네임스페이스 생성
 const nickname = prompt('닉네입을 입력해주세요');
+let currentRoom = '';
 
 socket.on('connect', () => {
   console.log('connected');
@@ -12,6 +14,21 @@ function sendMessage() {
   socket.emit('message', { message, nickname });
 }
 
+function createRoom() {
+  const room = prompt('채팅방 이름 입력');
+  roomSocket.emit('createRoom', { room, nickname });
+}
+
 socket.on('message', (message) => {
   $('#chat').append(`<div>${message}</div>`);
+});
+
+roomSocket.on('rooms', (data) => {
+  console.log(data);
+  $('#rooms').empty();
+  data.forEach((room) => {
+    $('#rooms').append(
+      `<li>${room} <button onclick="joinRoom(${room})">join</button></li>`,
+    );
+  });
 });

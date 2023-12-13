@@ -8,6 +8,7 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
+  MessageBody,
 } from '@nestjs/websockets';
 
 @WebSocketGateway({ namespace: 'chat' }) // 웹소켓 서버 설정 데코레이터
@@ -20,5 +21,19 @@ export class ChatGateway {
 
     // 전송을 요청한 클라이언트를 제외하고 다른 클라이언트에게 전송
     socket.broadcast.emit('message', `${nickname} : ${message}`);
+  }
+}
+
+@WebSocketGateway({ namespace: 'room' })
+export class RoomGateway {
+  rooms = [];
+
+  @WebSocketServer() server: Server;
+
+  @SubscribeMessage('createRoom')
+  handleMessage(@MessageBody() data) {
+    const { nickname, room } = data;
+    this.rooms.push(room);
+    this.server.emit('rooms', this.rooms);
   }
 }
