@@ -14,7 +14,8 @@ const socket_io_1 = require("socket.io");
 const websockets_1 = require("@nestjs/websockets");
 let ChatGateway = class ChatGateway {
     handleMessage(socket, data) {
-        this.server.emit('message', `client-${socket.id.substring(0, 4)} : ${data}`);
+        const { message, nickname } = data;
+        socket.broadcast.emit('message', `${nickname} : ${message}`);
     }
 };
 exports.ChatGateway = ChatGateway;
@@ -29,6 +30,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ChatGateway.prototype, "handleMessage", null);
 exports.ChatGateway = ChatGateway = __decorate([
-    (0, websockets_1.WebSocketGateway)()
+    (0, websockets_1.WebSocketGateway)({ namespace: 'chat' })
 ], ChatGateway);
 //# sourceMappingURL=app.gateway.js.map

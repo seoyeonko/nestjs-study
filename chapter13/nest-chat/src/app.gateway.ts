@@ -10,16 +10,15 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 
-@WebSocketGateway() // 웹소켓 서버 설정 데코레이터
+@WebSocketGateway({ namespace: 'chat' }) // 웹소켓 서버 설정 데코레이터
 export class ChatGateway {
   @WebSocketServer() server: Server; // 웹소켓 서버 인스턴스 선언
 
   @SubscribeMessage('message') // message 이벤트 구독
   handleMessage(socket: Socket, data: any): void {
-    // 접속한 클라이언트들에게 메세지 전송
-    this.server.emit(
-      'message',
-      `client-${socket.id.substring(0, 4)} : ${data}`,
-    );
+    const { message, nickname } = data;
+
+    // 전송을 요청한 클라이언트를 제외하고 다른 클라이언트에게 전송
+    socket.broadcast.emit('message', `${nickname} : ${message}`);
   }
 }
