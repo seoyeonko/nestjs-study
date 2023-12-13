@@ -23,6 +23,11 @@ socket.on('message', (message) => {
   $('#chat').append(`<div>${message}</div>`);
 });
 
+socket.on('notice', (data) => {
+  console.log(data);
+  $('#notice').append(`<div>${data.message}</div>`);
+});
+
 roomSocket.on('rooms', (data) => {
   console.log(data);
   $('#rooms').empty();
@@ -32,3 +37,8 @@ roomSocket.on('rooms', (data) => {
     );
   });
 });
+
+function joinRoom(room) {
+  roomSocket.emit('joinRoom', { room, nickname, toLeaveRoom: currentRoom });
+  currentRoom = room; // 현재 들어와 있는 방의 값 변경
+}

@@ -26,6 +26,10 @@ export class ChatGateway {
 
 @WebSocketGateway({ namespace: 'room' })
 export class RoomGateway {
+  // 채팅 게이트웨이 의존성 주입
+  // - 게이트웨이는 프로바이더이므로다른 곳에 의존성을 주입해 사용 가능
+  // - 의존성 주입은 게이트웨이 클래스 간에도 적용 가능
+  constructor(private readonly chatGateway: ChatGateway) {}
   rooms = [];
 
   @WebSocketServer() server: Server;
@@ -33,7 +37,20 @@ export class RoomGateway {
   @SubscribeMessage('createRoom')
   handleMessage(@MessageBody() data) {
     const { nickname, room } = data;
+    this.chatGateway.server.emit('notice', {
+      message: `${nickname} 님이 ${room} 방을 만들었습니다.`,
+    });
     this.rooms.push(room);
     this.server.emit('rooms', this.rooms);
+  }
+
+  @SubscribeMessage('joinRoom')
+  handleJoinRoom(socket: Socket, data) {
+    const { nickname, room, toLeaveRoom } = data;
+    socket.leave(toLeaveRoom);
+    this.chatGateway.server.emit('notice', {
+      message: `${nickname} 님이 ${room} 방에 입장했습니다.`,
+    });
+    socket.join(room); // 채팅방에 입장
   }
 }

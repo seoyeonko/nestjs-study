@@ -36,13 +36,25 @@ exports.ChatGateway = ChatGateway = __decorate([
     (0, websockets_1.WebSocketGateway)({ namespace: 'chat' })
 ], ChatGateway);
 let RoomGateway = class RoomGateway {
-    constructor() {
+    constructor(chatGateway) {
+        this.chatGateway = chatGateway;
         this.rooms = [];
     }
     handleMessage(data) {
         const { nickname, room } = data;
+        this.chatGateway.server.emit('notice', {
+            message: `${nickname} 님이 ${room} 방을 만들었습니다.`,
+        });
         this.rooms.push(room);
         this.server.emit('rooms', this.rooms);
+    }
+    handleJoinRoom(socket, data) {
+        const { nickname, room, toLeaveRoom } = data;
+        socket.leave(toLeaveRoom);
+        this.chatGateway.server.emit('notice', {
+            message: `${nickname} 님이 ${room} 방에 입장했습니다.`,
+        });
+        socket.join(room);
     }
 };
 exports.RoomGateway = RoomGateway;
@@ -57,7 +69,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], RoomGateway.prototype, "handleMessage", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)('joinRoom'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
+    __metadata("design:returntype", void 0)
+], RoomGateway.prototype, "handleJoinRoom", null);
 exports.RoomGateway = RoomGateway = __decorate([
-    (0, websockets_1.WebSocketGateway)({ namespace: 'room' })
+    (0, websockets_1.WebSocketGateway)({ namespace: 'room' }),
+    __metadata("design:paramtypes", [ChatGateway])
 ], RoomGateway);
 //# sourceMappingURL=app.gateway.js.map
