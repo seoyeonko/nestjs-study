@@ -10,4 +10,5 @@ export declare class RoomGateway {
     server: Server;
     handleMessage(data: any): void;
     handleJoinRoom(socket: Socket, data: any): void;
+    handleMessageToRoom(socket: Socket, data: any): void;
 }

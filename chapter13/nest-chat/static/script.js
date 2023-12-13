@@ -8,10 +8,16 @@ socket.on('connect', () => {
 });
 
 function sendMessage() {
-  const message = $('#message').val();
+  if (currentRoom === '') {
+    alert('방을 선택해주세요');
+    return;
+  }
 
+  const message = $('#message').val();
+  const data = { message, nickname, room: currentRoom };
   $('#chat').append(`<div>나: ${message}</div>`);
-  socket.emit('message', { message, nickname });
+  socket.emit('message', data);
+  return false;
 }
 
 function createRoom() {
@@ -19,8 +25,9 @@ function createRoom() {
   roomSocket.emit('createRoom', { room, nickname });
 }
 
-socket.on('message', (message) => {
-  $('#chat').append(`<div>${message}</div>`);
+socket.on('message', (data) => {
+  console.log(data);
+  $('#chat').append(`<div>${data.message}</div>`);
 });
 
 socket.on('notice', (data) => {
@@ -33,12 +40,13 @@ roomSocket.on('rooms', (data) => {
   $('#rooms').empty();
   data.forEach((room) => {
     $('#rooms').append(
-      `<li>${room} <button onclick="joinRoom(${room})">join</button></li>`,
+      `<li>${room} <button onclick="joinRoom('${room}')">join</button></li>`,
     );
   });
 });
 
 function joinRoom(room) {
   roomSocket.emit('joinRoom', { room, nickname, toLeaveRoom: currentRoom });
+  $('#chat').html(); // 채팅방 이동시 기존 메세지 삭제
   currentRoom = room; // 현재 들어와 있는 방의 값 변경
 }

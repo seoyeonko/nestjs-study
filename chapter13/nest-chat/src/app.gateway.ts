@@ -20,7 +20,7 @@ export class ChatGateway {
     const { message, nickname } = data;
 
     // 전송을 요청한 클라이언트를 제외하고 다른 클라이언트에게 전송
-    socket.broadcast.emit('message', `${nickname} : ${message}`);
+    socket.broadcast.emit('message', { message: `${nickname} : ${message}` });
   }
 }
 
@@ -50,6 +50,17 @@ export class RoomGateway {
     socket.leave(toLeaveRoom);
     this.chatGateway.server.emit('notice', {
       message: `${nickname} 님이 ${room} 방에 입장했습니다.`,
+    });
+    socket.join(room); // 채팅방에 입장
+  }
+
+  @SubscribeMessage('message')
+  handleMessageToRoom(socket: Socket, data) {
+    const { nickname, room, message } = data;
+    socket.leave(data);
+    // 지정한 채팅방으로 나 이외의 모든 사람에게 데이터 전송
+    socket.broadcast.to(room).emit('message', {
+      message: `${nickname} : ${message}`,
     });
     socket.join(room); // 채팅방에 입장
   }
